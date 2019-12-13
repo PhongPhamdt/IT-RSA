@@ -81,6 +81,14 @@ function RSA_generateKeys(bits) {
             n: n.removeZeros() };
 };
 
+// function _newCharCode(str, i) {
+//   return str.charCodeAt(i) - 31;
+// }
+
+// function _newFromChar(char) {
+//   return fromCharCode(char + 1.toString());
+// }
+
 function RSA_encrypt (msg, e, n) {
     if (msg == undefined) return "";
     let splitMsg = msg.match(/.{1,4}/g);
@@ -89,8 +97,8 @@ function RSA_encrypt (msg, e, n) {
       let ciphertext = "";
       let m = new SuperInteger();
       for (let i = 0; i < char.length; i++) {
-        let y = new SuperInteger(Math.pow(90, char.length-1-i));
-        let x = new SuperInteger(char.charCodeAt(i)).times(y)
+        let y = new SuperInteger(Math.pow(91, char.length-1-i));
+        let x = new SuperInteger(char.charCodeAt(i)).minus(32).times(y)
         m = m.add(x);
       }
       console.log("m: ",m)
@@ -98,46 +106,56 @@ function RSA_encrypt (msg, e, n) {
       console.log("c: ",c);
       let count = new SuperInteger(c);
       while (count.greater(0)) {
-        let ch = c.mod(90).add(32);
+        let ch = c.mod(91).add(32);
         ciphertext += String.fromCharCode(ch.toString());
-        c = c.div(90)
-        count = count.div(90);
+        c = c.div(91)
+        count = count.div(91);
       }
       let result = ciphertext.split("").reverse().join('');
       cipherTotal.push(result);
     });
-    // for (var i = 0; i < msg.length; i++) {
-    //     var c = new SuperInteger(msg.charCodeAt(i)).powMod(e,n);
-    //     var count = new SuperInteger(n);
-    //     while (count.greater(0)) {
-    //         var ch = c.mod(90).add(32);
-    //         c = c.div(90);
-    //         count = count.div(90);
-    //         ciphertext += String.fromCharCode(ch.toString());
-    //     }
-    // }
     return cipherTotal.join('|');
 };
 
 function RSA_decrypt (cipher, d, n) {
     if (cipher == undefined) return "";
-    var msg = "";
-    var count = new SuperInteger(n);
-    sum = new SuperInteger(0);
-    for (var i = cipher.length-1; i >= 0; i--) {
-        if (count == 0) {
-            var c = sum.powMod(d,n);
-            msg += String.fromCharCode(c.toString());
-            count = new SuperInteger(n);
-            sum = new SuperInteger(0);
-        }
-        sum = sum.times(90).add(cipher.charCodeAt(i)).minus(32);
-        count = count.div(90);
-    }
-    var c = sum.powMod(d,n);
-    msg += String.fromCharCode(c.toString());
-    count = new SuperInteger(n);
-    sum = new SuperInteger(0);
-    return msg.split("").reverse().join("");;
+    let splitCipher = cipher.split('|');
+    let total = [];
+    splitCipher.forEach(char => {
+      let msg = "";
+      let c_decrypt = new SuperInteger(0);
+      for (let i = 0; i < char.length; i++) {
+        let y = new SuperInteger(Math.pow(91, char.length-1-i));
+        let x = new SuperInteger(char.charCodeAt(i)).minus(32).times(y)
+        c_decrypt = c_decrypt.add(x);
+      }
+      let m = new SuperInteger(c_decrypt).powMod(d,n);
+      let count = new SuperInteger(m);
+      while (count.greater(0)) {
+        let ch = m.mod(91).add(32);
+        msg += String.fromCharCode((ch).toString());
+        m = m.div(91)
+        count = count.div(91);
+      }
+      let result = msg.split("").reverse().join('');
+      total.push(result)
+    });
+    // var count = new SuperInteger(n);
+    // sum = new SuperInteger(0);
+    // for (var i = cipher.length-1; i >= 0; i--) {
+    //     if (count == 0) {
+    //         var c = sum.powMod(d,n);
+    //         msg += String.fromCharCode(c.toString());
+    //         count = new SuperInteger(n);
+    //         sum = new SuperInteger(0);
+    //     }
+    //     sum = sum.times(91).add(cipher.charCodeAt(i)).minus(32);
+    //     count = count.div(91);
+    // }
+    // var c = sum.powMod(d,n);
+    // msg += String.fromCharCode(c.toString());
+    // count = new SuperInteger(n);
+    // sum = new SuperInteger(0);
+    return total.join("");
 };
 
