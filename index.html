@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RSA</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Jquery  -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="display-3">RSA</h1>
+    <button type="submit" class="btn btn-info" style="margin-bottom: 20px;" id="generate">Generate new key</button>
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Public Key</h3>
+            <p class="card-text">E = <span id="key-e"></span></p>
+            <p class="card-text">N = <span id="key-n"></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Private Key</h3>
+            <p class="card-text">D = <span id="key-d"></span></p>
+            <p class="card-text">N = <span id="key-n2"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">Encrypt message:</label>
+      <div class="row" style="margin: 0px;">
+        <input type="text" name="" id="plain-text" class="form-control col-11" placeholder="" aria-describedby="helpId">
+        <button class="btn btn-primary" type="submit" style="margin-left: 10px;" id="encrypt">Encrypt</button>  
+      </div>
+      <div class="form-group">
+        <label for=""></label>
+        <textarea class="form-control" name="" id="result-text" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">Decrypt message:</label>
+      <div class="row" style="margin: 0px;">
+        <input type="text" name="" id="crypted-text" class="form-control col-11" placeholder="" aria-describedby="helpId">
+        <button class="btn btn-primary" type="submit" style="margin-left: 10px;" id="decrypt">Decrypt</button>  
+      </div>
+      <div class="form-group">
+        <label for=""></label>
+        <textarea class="form-control" name="" id="result" rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+  <script src="lib/SuperInteger.js"></script>
+  <script src="lib/Primes.js"></script>
+  <script src="lib/RSA.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
